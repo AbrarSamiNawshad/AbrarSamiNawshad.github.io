@@ -163,36 +163,10 @@ function showNotification(message, type = 'info') {
     }, 5000);
 }
 
-// Typing animation for hero title
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
-// Initialize typing animation when page loads
+// Initialize page when loaded
 document.addEventListener('DOMContentLoaded', () => {
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const originalText = heroTitle.innerHTML;
-        heroTitle.style.borderRight = '2px solid #ffd700';
-        
-        setTimeout(() => {
-            typeWriter(heroTitle, originalText, 50);
-            setTimeout(() => {
-                heroTitle.style.borderRight = 'none';
-            }, originalText.length * 50 + 1000);
-        }, 1000);
-    }
+    // Remove the problematic typing animation
+    // The title will display normally with proper HTML rendering
 });
 
 // Skills animation counter
