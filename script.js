@@ -1,3 +1,17 @@
+// Initialize dark mode immediately to prevent flash
+(function() {
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.documentElement.classList.add('dark-mode');
+        if (document.body) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.addEventListener('DOMContentLoaded', () => {
+                document.body.classList.add('dark-mode');
+            });
+        }
+    }
+})();
+
 // Mobile Navigation Toggle
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
@@ -18,8 +32,20 @@ document.querySelectorAll('.nav-link').forEach(link => {
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        
+        // Special handling for blog link - redirect to blog page if not on main page
+        if (href === '#blog') {
+            const blogSection = document.querySelector('#blog');
+            if (!blogSection || window.location.pathname.includes('blog.html')) {
+                // If no blog section or already on blog page, redirect to blog.html
+                window.location.href = 'blog.html';
+                return;
+            }
+        }
+        
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.querySelector(href);
         if (target) {
             target.scrollIntoView({
                 behavior: 'smooth',
@@ -29,17 +55,62 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar background change on scroll
+// Navbar background change on scroll with enhanced effects
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    
     if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
+        if (isDarkMode) {
+            navbar.style.background = 'rgba(15, 15, 15, 0.98)';
+            navbar.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.3)';
+        } else {
+            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            navbar.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.15)';
+        }
+        navbar.style.backdropFilter = 'blur(20px)';
     } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        if (isDarkMode) {
+            navbar.style.background = 'rgba(20, 20, 20, 0.95)';
+            navbar.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.2)';
+        } else {
+            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
+        }
+        navbar.style.backdropFilter = 'blur(15px)';
     }
 });
+
+// Active nav link highlighting based on scroll position
+function updateActiveNavLink() {
+    // Don't update active nav links on blog page
+    if (window.location.pathname.includes('blog.html')) {
+        return;
+    }
+    
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        // Use a smaller offset for better detection
+        if (window.scrollY >= (sectionTop - 100)) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', updateActiveNavLink);
+window.addEventListener('load', updateActiveNavLink);
 
 // Animate elements when they come into view
 const observerOptions = {
@@ -251,16 +322,40 @@ function createDarkModeToggle() {
     });
     
     darkModeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark-mode');
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
         darkModeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        
+        // Update navbar immediately when switching themes
+        const navbar = document.querySelector('.navbar');
+        const scrollY = window.scrollY;
+        
+        if (scrollY > 100) {
+            if (isDark) {
+                navbar.style.background = 'rgba(15, 15, 15, 0.98)';
+                navbar.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.3)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                navbar.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.15)';
+            }
+        } else {
+            if (isDark) {
+                navbar.style.background = 'rgba(20, 20, 20, 0.95)';
+                navbar.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.2)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
+            }
+        }
         
         // Store preference
         localStorage.setItem('darkMode', isDark);
     });
     
-    // Check for saved preference
+    // Check for saved preference and ensure both html and body have dark mode
     if (localStorage.getItem('darkMode') === 'true') {
+        document.documentElement.classList.add('dark-mode');
         document.body.classList.add('dark-mode');
         darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
     }
@@ -273,8 +368,28 @@ document.addEventListener('DOMContentLoaded', createDarkModeToggle);
 
 // Console welcome message
 console.log(`
-🚀 Welcome to Abrar Sami Nawshad's website!
+🤖 Welcome to Abrar Sami Nawshad's AI & ML Portfolio!
 📧 Contact: contact@imnawshad.me
 🌐 Website: https://imnawshad.me
-💼 This site was built with HTML, CSS, and JavaScript
+🧠 Specializing in AI Automation & Machine Learning
 `);
+
+// Blog post toggle functionality
+function toggleBlogPost(button) {
+    const blogContent = button.parentElement;
+    const blogBody = blogContent.querySelector('.blog-body');
+    const isExpanded = blogBody.classList.contains('expanded');
+    
+    if (isExpanded) {
+        blogBody.classList.remove('expanded');
+        button.textContent = 'Read More';
+        // Smooth scroll to the top of the blog post
+        button.closest('.blog-post').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    } else {
+        blogBody.classList.add('expanded');
+        button.textContent = 'Read Less';
+    }
+}
