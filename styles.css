@@ -107,6 +107,8 @@ body {
     padding: 0 5%;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    position: relative;
+    z-index: 1;
 }
 
 .hero-content {
@@ -228,6 +230,8 @@ section {
 /* About Section */
 .about {
     background: #f8f9fa;
+    position: relative;
+    z-index: 2;
 }
 
 .about-content {
