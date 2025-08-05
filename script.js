@@ -210,16 +210,8 @@ if (aboutSection) {
     counterObserver.observe(aboutSection);
 }
 
-// Parallax effect for hero section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    const parallaxSpeed = 0.5;
-    
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
-    }
-});
+// Parallax effect removed to prevent scrolling interference
+// The hero section will now stay in place for better readability
 
 // Add loading animation
 window.addEventListener('load', () => {
