@@ -140,11 +140,11 @@ body {
 
 /* Hero Section */
 .hero {
+    padding: 0 5%;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 5%;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     position: relative;
@@ -160,11 +160,15 @@ body {
     font-size: 3.5rem;
     margin-bottom: 1rem;
     line-height: 1.2;
+    max-width: 100%;
 }
 
 .highlight {
     color: #ffd700;
     position: relative;
+    display: inline-block;
+    white-space: normal;
+    word-break: break-word;
 }
 
 .hero-subtitle {
@@ -547,6 +551,11 @@ section {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .hero {
+        min-height: 100vh;
+        padding: 100px 5% 60px;
+    }
+    
     .hamburger {
         display: flex;
     }
@@ -624,11 +633,17 @@ section {
     .hero {
         flex-direction: column;
         text-align: center;
-        padding: 2rem;
+        padding: 130px 1rem 60px;
+        height: auto;
+        position: relative;
     }
 
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+        display: block;
+        width: 100%;
+        word-wrap: break-word;
+        margin-bottom: 1.5rem;
     }
 
     .hero-image {
@@ -666,8 +681,39 @@ section {
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding: 120px 15px 50px;
+        min-height: 100vh;
+        height: auto;
+    }
+
+    .hero-content {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        position: static;
+    }
+
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.9rem;
+        line-height: 1.4;
+        margin-bottom: 1rem;
+    }
+
+    .highlight {
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        display: inline;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        line-height: 1.5;
+    }
+
+    .hero-description {
+        font-size: 1rem;
     }
 
     .section-title {
@@ -682,6 +728,22 @@ section {
     .btn {
         padding: 10px 25px;
         font-size: 0.9rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+    .hero-title {
+        font-size: 1.6rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .profile-photo {
+        width: 180px;
+        height: 180px;
     }
 }
 
